@@ -4,6 +4,7 @@ import os
 from cryptography.fernet import Fernet
 
 parser = argparse.ArgumentParser()
+parser.add_argument("-l", "--list", help="List files in database", action="store_true")
 parser.add_argument("-e", "--encrypt", help="Encrypt the files", action="store_true")
 parser.add_argument("-d", "--decrypt", help="Decrypt the files", action="store_true")
 parser.add_argument("-f", "--file", help="Name of the file")
@@ -27,8 +28,16 @@ class Main:
 				self.encrypt(args.file)
 			else:
 				print("Select an option to encrypt of decrypt")
+		elif args.list:
+			self.list_files()
 		else:
 			print("Enter file name by using -f or --file")
+
+	def list_files(self):
+		self.cur.execute("SELECT FILENAME FROM FILE")
+		_files = self.cur.fetchall()
+		for _file in _files:
+			print("".join(_file))
 
 	def encrypt(self, file):
 		with open(file, "rb") as f:
