@@ -14,6 +14,12 @@ class Main:
 		self.key = b'3Seh-ueR39DojWKAWjFDveOKXMsWpUrW9gTXA3A1VgU='
 		self.conn = sqlite3.connect("db.sqlite3")
 		self.cur = self.conn.cursor()
+		table = """CREATE TABLE IF NOT EXISTS FILE(
+			FileName VARCHAR,
+			Content BLOB
+		);"""
+		self.cur.execute(table)
+		self.conn.commit()
 		if args.file:
 			if args.decrypt:
 				self.decrypt(args.file)
